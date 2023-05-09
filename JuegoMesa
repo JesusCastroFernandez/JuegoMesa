@@ -1,0 +1,55 @@
+import java.util.Arrays;
+
+public class JuegoMesa {
+    
+    public static void main(String[] args) {
+        
+        String[] anotaciones = {"a", "a-b", "X-A", "O-O-B", "X--X", "O-X-", "-X-X", "O-X-O-X-O", "o", "O-o", "X", "o-x-o", "x", "x-x", "O-x-X", "X-X-X", "x-X-X-x"};
+        StringBuilder puntuaciones = new StringBuilder();
+        int validas = 0, noValidas = 0;
+        
+        for (String anotacion : anotaciones) {
+            if (anotacion.matches("^[xXoO]+([\\-][xXoO]+)*$")) {
+                int puntuacion = 0;
+                String[] turnos = anotacion.split("-");
+                for (String turno : turnos) {
+                    for (int i = 0; i < turno.length(); i++) {
+                        char c = turno.charAt(i);
+                        if (c == 'x' || c == 'X') {
+                            puntuacion++;
+                        } else if (c == 'o' || c == 'O') {
+                            // no hace nada
+                        } else {
+                            puntuacion = -1;
+                            break;
+                        }
+                    }
+                    if (puntuacion == -1) {
+                        break;
+                    }
+                }
+                if (puntuacion >= 0) {
+                    puntuaciones.append(puntuacion).append(",");
+                    validas++;
+                } else {
+                    puntuaciones.append("-1,");
+                    noValidas++;
+                }
+            } else {
+                puntuaciones.append("-1,");
+                noValidas++;
+            }
+        }
+        
+        // Eliminar la última coma de la cadena de puntuaciones
+        if (puntuaciones.length() > 0) {
+            puntuaciones.deleteCharAt(puntuaciones.length() - 1);
+        }
+        
+        // Mostrar resultados
+        System.out.println("Anotaciones: " + Arrays.toString(anotaciones));
+        System.out.println("Puntuaciones: " + puntuaciones.toString());
+        System.out.println("Anotaciones válidas encontradas: " + validas);
+        System.out.println("Anotaciones no válidas encontradas: " + noValidas);
+    }
+}
